@@ -8,8 +8,6 @@ This script generates personalized certificates for students based on the provid
 2. [Usage](#usage)
 3. [Functions](#functions)
 4. [Dependencies](#dependencies)
-5. [Contributing](#contributing)
-6. [License](#license)
 
 ## Installation
 
