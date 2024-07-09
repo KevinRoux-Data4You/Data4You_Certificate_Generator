@@ -14,9 +14,15 @@
 </head>
 <body>
     <div class="container">
-        <label for="csvFile" class="custom-file-upload">Import a CSV file:</label>
-        <input type="file" id="csvFile" accept=".csv" class="file-input">
-        <br><br><br>
+        Import a CSV file:
+        <label for="csvFile" class="custom-file-upload"></label>
+        <input type="file" id="csvFile" accept=".csv" class="file-input" onchange="updateBackgroundName()">
+        <br><br>
+        Import a Custom Background (optional):
+        <label for="backgroundFile" class="custom-file-upload"></label>
+        <input type="file" id="backgroundFile" accept=".pdf" class="file-input" onchange="updateCustomBackgroundName()">
+        <p id="BackgroundName">Default background: None</p>
+        <br><br>
         <div class="date-inputs">
             <div class="date-input">
                 <label for="startDay">Start Day:</label>
@@ -39,8 +45,10 @@
         </div>
     </div>
     <script type="module">
-        import { generateCertificate } from './src/generateCertificate.js';
+        import { generateCertificate, updateBackgroundName, updateCustomBackgroundName } from './src/generateCertificate.js';
         window.generateCertificate = generateCertificate;
+        window.updateBackgroundName = updateBackgroundName;
+        window.updateCustomBackgroundName = updateCustomBackgroundName;
     </script>
 </body>
 </html>
