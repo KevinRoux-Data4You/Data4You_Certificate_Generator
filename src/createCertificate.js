@@ -27,7 +27,45 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
     // Define the size and color for the text
     const { width, height } = startPage.getSize();
     const fontSize = 31.5;
+    const fontSize16 = 16;
     const color = rgb(0, 0, 0);
+
+    let certificateType = student['Certificate Type'] || '';
+
+    // Set the title text based on certificate type
+    let titleText = "CERTIFICATE OF ATTENDANCE";
+    if(!isDS) {
+        if (certificateType.toLowerCase().includes('online')) {
+            titleText = "ONLINE CERTIFICATE OF COMPLETION";
+        } else {
+            titleText = "CERTIFICATE OF COMPLETION";
+        }
+    }
+
+    const titleX = (width - semiBoldFont.widthOfTextAtSize(titleText, fontSize)) / 2;
+    const titleY = height / 2 + 160;
+
+    startPage.drawText(titleText, {
+        x: titleX,
+        y: titleY,
+        size: fontSize,
+        font: semiBoldFont,
+        color: color,
+    });
+
+    // Draw award text
+    let awardText = "This certificate is awarded to";
+
+    const awardX = (width - lightFont.widthOfTextAtSize(awardText, fontSize16)) / 2;
+    const awardY = height / 2 + 120;
+
+    startPage.drawText(awardText, {
+        x: awardX,
+        y: awardY,
+        size: fontSize16,
+        font: lightFont,
+        color: color,
+    });
 
     // Draw the student's name in the center of the page
     const studentName = `${student.Name} ${student.Surname}`;
@@ -47,6 +85,21 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
     const attendanceTotal2 = student['Attendance Total (%) 1'];
 
     if (isDS) {
+
+        // Draw Attendance title text
+        let attendanceText = "Attendance:";
+
+        const attendanceX = 150;
+        const attendanceY = height / 2 - 90;
+
+        startPage.drawText(attendanceText, {
+            x: attendanceX,
+            y: attendanceY,
+            size: fontSize16,
+            font: lightFont,
+            color: color,
+        });
+
         
         let attendanceText1 = null;
         let attendanceText2 = null;
@@ -64,15 +117,15 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
             }
         }
     
-        const attendanceX = 260;
-        const attendanceY1 = height / 2 - 90;
-        let attendanceY2;
+        const attendanceTextX = 260;
+        const attendanceTextY1 = height / 2 - 90;
+        let attendanceTextY2;
     
         // Determine the Y coordinate
         if (attendanceText1) {
-            attendanceY2 = attendanceY1 - 26;
+            attendanceTextY2 = attendanceTextY1 - 26;
         } else {
-            attendanceY2 = attendanceY1;
+            attendanceTextY2 = attendanceTextY1;
         }
     
         const attendanceFontSize = 16;
@@ -80,8 +133,8 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
         // Draw the first line of attendance text if it exists
         if (attendanceText1) {
             startPage.drawText(attendanceText1, {
-                x: attendanceX,
-                y: attendanceY1,
+                x: attendanceTextX,
+                y: attendanceTextY1,
                 size: attendanceFontSize,
                 font: boldFont,
                 color: color,
@@ -91,8 +144,8 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
         // Draw the second line of attendance text if it exists
         if (attendanceText2) {
             startPage.drawText(attendanceText2, {
-                x: attendanceX,
-                y: attendanceY2,
+                x: attendanceTextX,
+                y: attendanceTextY2,
                 size: attendanceFontSize,
                 font: boldFont,
                 color: color,
@@ -114,8 +167,8 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
 
         if (attendanceInPerson !== 'N/A' && attendanceOnline !== 'N/A') {
             const attendanceDetails = `(${attendanceInPerson}% in-person, ${attendanceOnline}% online)`;
-            const attendanceDetailsX = attendanceX;
-            const attendanceDetailsY = attendanceY2 - 18;
+            const attendanceDetailsX = attendanceTextX;
+            const attendanceDetailsY = attendanceTextY2 - 18;
             const attendanceDetailsFontSize = 12;
 
             startPage.drawText(attendanceDetails, {
@@ -128,41 +181,60 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
         }
         
     } else {
-        // Handle attendance and score data for non-DS students
-        let certificateType = student['Certificate Type'] || '';
 
-        // Set the title text based on certificate type
-        let titleText = "";
-        if (certificateType.toLowerCase().includes('online')) {
-            titleText = "ONLINE CERTIFICATE OF COMPLETION";
-        } else {
-            titleText = "CERTIFICATE OF COMPLETION";
-        }
-        if (certificateType.toLowerCase().includes('attendance') || certificateType.toLowerCase().includes('none')) {
-            titleText = "CERTIFICATE OF ATTENDANCE";
-        }
 
-        const titleX = (width - semiBoldFont.widthOfTextAtSize(titleText, fontSize)) / 2;
-        const titleY = height / 2 + 160;
+        // Draw score title text
+        let scoretitle = "Grade:";
 
-        startPage.drawText(titleText, {
-            x: titleX,
-            y: titleY,
-            size: fontSize,
-            font: semiBoldFont,
+        const scoretitleX = 150;
+        const gradeY = height / 2 - 85;
+
+        startPage.drawText(scoretitle, {
+            x: scoretitleX,
+            y: gradeY,
+            size: fontSize16,
+            font: lightFont,
             color: color,
         });
 
-        let score = student['% out of Total Score'] || 'N/A';
-        if (score !== 'N/A') {
-            score = score.replace(',', '.');
-            score = Math.round(parseFloat(score));
+        let scorevalue = student['% out of Total Score'] || 'N/A';
+        if (scorevalue !== 'N/A') {
+            scorevalue = scorevalue.replace(',', '.');
+            scorevalue = Math.round(parseFloat(scorevalue));
         }
 
-        let attendance = student['Attendance Total (%)'] || 'N/A';
-        if (attendance !== 'N/A') {
-            attendance = attendance.replace(',', '.');
-            attendance = Math.round(parseFloat(attendance));
+        certificateType = cleanCertificateType(certificateType);
+
+        const gradeText = `${scorevalue}% ${certificateType}`;
+        const gradeFontSize = 16;
+        const gradeX = 215;
+
+        startPage.drawText(gradeText, {
+            x: gradeX,
+            y: gradeY,
+            size: gradeFontSize,
+            font: boldFont,
+            color: color,
+        });
+
+        // Draw attendance title text
+        let attendancetitle = "Attendance:";
+
+        const attendancetitleX = 150;
+        const attendanceY = gradeY - 26;
+
+        startPage.drawText(attendancetitle, {
+            x: scoretitleX,
+            y: attendanceY,
+            size: fontSize16,
+            font: lightFont,
+            color: color,
+        });        
+
+        let attendancevalue = student['Attendance Total (%)'] || 'N/A';
+        if (attendancevalue !== 'N/A') {
+            attendancevalue = attendancevalue.replace(',', '.');
+            attendancevalue = Math.round(parseFloat(attendancevalue));
         }
 
         let attendanceInPerson = student['Attendance In Person (%)'] || 'N/A';
@@ -177,25 +249,9 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
             attendanceOnline = Math.round(parseFloat(attendanceOnline));
         }
 
-        certificateType = cleanCertificateType(certificateType);
-
-        const gradeText = `${score}% ${certificateType}`;
-        const gradeFontSize = 16;
-        const gradeX = 215;
-        const gradeY = height / 2 - 85;
-
-        startPage.drawText(gradeText, {
-            x: gradeX,
-            y: gradeY,
-            size: gradeFontSize,
-            font: boldFont,
-            color: color,
-        });
-
-        if (attendance !== 'N/A') {
-            const attendanceText = `${attendance}%`;
+        if (attendancevalue !== 'N/A') {
+            const attendanceText = `${attendancevalue}%`;
             const attendanceX = 260;
-            const attendanceY = gradeY - 26;
 
             startPage.drawText(attendanceText, {
                 x: attendanceX,
@@ -220,28 +276,6 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
                 });
             }
         }
-    }
-
-    // Draw the graduation date if it exists
-    if (graduationDate) {
-        
-        let dateX = 240;
-        let dateY = height / 2 - 159;
-        
-        if (isDS) {
-            dateX = 240;
-            dateY = height / 2 - 170;
-        }
-        
-        const dateFontSize = 16;
-
-        startPage.drawText(formatDate(graduationDate), {
-            x: dateX,
-            y: dateY,
-            size: dateFontSize,
-            font: boldFont,
-            color: color,
-        });
     }
 
     // Define custom text lines for DS and non-DS students
@@ -292,6 +326,42 @@ export async function createCertificate(student, pdfTemplateBytes, boldFontBytes
             color: color,
         });
         customTextY -= 15;
+    }
+
+
+    // Draw the graduation date if it exists
+    if (graduationDate) {
+
+        // Draw Attendance title text
+        let datetitle = "Issued on:";
+
+        const datetitleX = 150;
+        
+        let datevalueX = 240;
+        let dateY = height / 2 - 158;
+        
+        if (isDS) {
+            datevalueX = 240;
+            dateY = height / 2 - 170;
+        }
+        
+        const datevalueFontSize = 16;
+
+        startPage.drawText(datetitle, {
+            x: datetitleX,
+            y: dateY,
+            size: fontSize16,
+            font: lightFont,
+            color: color,
+        });
+
+        startPage.drawText(formatDate(graduationDate), {
+            x: datevalueX,
+            y: dateY,
+            size: datevalueFontSize,
+            font: boldFont,
+            color: color,
+        });
     }
 
     // Return the final PDF document
