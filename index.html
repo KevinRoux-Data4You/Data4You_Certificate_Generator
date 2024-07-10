@@ -44,8 +44,8 @@
                     <button class="reset-button" onclick="resetBackground()">Reset</button>
                 </div>
             </div>
-            <button class="preview" onclick="previewCertificate()">Preview First Certificate</button>
-            <button class="generate" onclick="generateCertificate()">Generate Certificate</button>
+            <button class="preview" onclick="handleCertificateAction(true)">Preview First Certificate</button>
+            <button class="generate" onclick="handleCertificateAction(false)">Generate Certificates</button>
             <div class="progress-bar-container hidden" id="progressBarContainer">
                 <div class="progress-bar" id="progressBar">
                     <span id="progressText">0%</span>
@@ -55,16 +55,16 @@
         <div class="preview-container" id="previewContainer">
             <h2>Certificate Preview:</h2>
             <div class="preview-list" id="previewList"></div>
-        </div>
+            <div class="pagination" id="paginationContainer"></div>
+        </div>        
     </div>
     <script type="module">
-        import { generateCertificate, previewCertificate } from './src/generateCertificate.js';
+        import { handleCertificateAction } from './src/generateCertificate.js';
         import { updateBackgroundName } from './src/updateBackgroundName.js';
         import { updateCustomBackgroundName } from './src/updateCustomBackgroundName.js';
         import { resetBackground } from './src/resetBackground.js';
-
-        window.generateCertificate = generateCertificate;
-        window.previewCertificate = previewCertificate;
+    
+        window.handleCertificateAction = handleCertificateAction;
         window.updateBackgroundName = updateBackgroundName;
         window.updateCustomBackgroundName = updateCustomBackgroundName;
         window.resetBackground = resetBackground;
