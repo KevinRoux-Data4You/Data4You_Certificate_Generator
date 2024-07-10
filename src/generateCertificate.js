@@ -98,32 +98,3 @@ export async function generateCertificate() {
         console.log(student);
     });
 }
-
-export function updateBackgroundName() {
-    const csvFile = document.getElementById('csvFile').files[0];
-    const defaultBackgroundName = document.getElementById('BackgroundName');
-
-    if (csvFile) {
-        const fileName = csvFile.name;
-        if (fileName.includes('WD')) {
-            defaultBackgroundName.textContent = 'Default background: WD';
-        } else if (fileName.includes('DS')) {
-            defaultBackgroundName.textContent = 'Default background: DS';
-        } else {
-            defaultBackgroundName.textContent = 'Default background: Invalid file name';
-        }
-    } else {
-        defaultBackgroundName.textContent = 'Default background: None';
-    }
-}
-
-export function updateCustomBackgroundName() {
-    const backgroundFile = document.getElementById('backgroundFile').files[0];
-    const defaultBackgroundName = document.getElementById('BackgroundName');
-
-    if (backgroundFile) {
-        defaultBackgroundName.textContent = `Custom background: ${backgroundFile.name}`;
-    } else {
-        defaultBackgroundName.textContent = 'Custom background: None';
-    }
-}

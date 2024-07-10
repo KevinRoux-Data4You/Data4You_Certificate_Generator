@@ -45,7 +45,10 @@
         </div>
     </div>
     <script type="module">
-        import { generateCertificate, updateBackgroundName, updateCustomBackgroundName } from './src/generateCertificate.js';
+        import { generateCertificate } from './src/generateCertificate.js';
+        import { updateBackgroundName } from './src/updateBackgroundName.js';
+        import { updateCustomBackgroundName } from './src/updateCustomBackgroundName.js';
+
         window.generateCertificate = generateCertificate;
         window.updateBackgroundName = updateBackgroundName;
         window.updateCustomBackgroundName = updateCustomBackgroundName;
