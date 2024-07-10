@@ -14,14 +14,11 @@
 </head>
 <body>
     <div class="container">
+        Required parameter:
+        <br><br>
         Import a CSV file:
         <label for="csvFile" class="custom-file-upload"></label>
         <input type="file" id="csvFile" accept=".csv" class="file-input" onchange="updateBackgroundName()">
-        <br><br>
-        Import a Custom Background (optional):
-        <label for="backgroundFile" class="custom-file-upload"></label>
-        <input type="file" id="backgroundFile" accept=".pdf" class="file-input" onchange="updateCustomBackgroundName()">
-        <p id="BackgroundName">Default background: None</p>
         <br><br>
         <div class="date-inputs">
             <div class="date-input">
@@ -37,6 +34,16 @@
             <label for="graduationDate">Select graduation date:</label>
             <input type="date" id="graduationDate" placeholder="Select graduation date">
         </div>
+        <br><br>
+        Optional parameter:
+        <br><br>
+        Import a Custom Background:
+        <label for="backgroundFile" class="custom-file-upload"></label>
+        <input type="file" id="backgroundFile" accept=".pdf" class="file-input" onchange="updateCustomBackgroundName()">
+        <div class="background-info">
+            <p id="BackgroundName">Default background: None</p>
+            <button class="reset-button" onclick="resetBackground()">Reset</button>
+        </div>
         <button onclick="generateCertificate()">Generate Certificate</button>
         <div class="progress-bar-container hidden" id="progressBarContainer">
             <div class="progress-bar" id="progressBar">
@@ -48,10 +55,12 @@
         import { generateCertificate } from './src/generateCertificate.js';
         import { updateBackgroundName } from './src/updateBackgroundName.js';
         import { updateCustomBackgroundName } from './src/updateCustomBackgroundName.js';
+        import { resetBackground } from './src/resetBackground.js';
 
         window.generateCertificate = generateCertificate;
         window.updateBackgroundName = updateBackgroundName;
         window.updateCustomBackgroundName = updateCustomBackgroundName;
+        window.resetBackground = resetBackground;
     </script>
 </body>
 </html>

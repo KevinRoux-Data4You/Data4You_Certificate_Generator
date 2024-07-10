@@ -60,6 +60,35 @@ button:hover {
     background-color: #0056b3;
 }
 
+.background-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#BackgroundName {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reset-button {
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.reset-button:hover {
+    background-color: darkred;
+}
+
 .progress-bar-container {
     width: 100%;
     background-color: #e0e0e0;
