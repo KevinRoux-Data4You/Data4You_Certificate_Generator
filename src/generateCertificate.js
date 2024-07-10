@@ -98,3 +98,69 @@ export async function generateCertificate() {
         console.log(student);
     });
 }
+
+
+export async function previewCertificate() {
+    const csvFile = document.getElementById('csvFile').files[0];
+    const backgroundFile = document.getElementById('backgroundFile').files[0];
+    const graduationDate = document.getElementById('graduationDate').value;
+    const startDay = document.getElementById('startDay').value;
+    const lastDay = document.getElementById('lastDay').value;
+
+    if (!csvFile) {
+        alert("Please upload a CSV file.");
+        return;
+    }
+
+    if (!graduationDate || !startDay || !lastDay) {
+        alert("Please select graduation, start day, and last day.");
+        return;
+    }
+
+    const csvText = await csvFile.text();
+    const fileName = csvFile.name;
+    const isDS = fileName.includes('DS');
+    const students = parseCSV(csvText, isDS);
+
+    if (students.length === 0) {
+        alert("No student data found in the CSV.");
+        return;
+    }
+
+    const seasonAndYear = extractSeasonAndYear(fileName);
+    const season = seasonAndYear.season;
+    const year = seasonAndYear.year;
+
+    let backgroundPdf;
+
+    if (backgroundFile) {
+        backgroundPdf = await backgroundFile.arrayBuffer();
+    } else if (fileName.includes('WD')) {
+        backgroundPdf = await fetch('Background/background_WD.pdf').then(res => res.arrayBuffer());
+    } else if (fileName.includes('DS')) {
+        backgroundPdf = await fetch('Background/background_DS.pdf').then(res => res.arrayBuffer());
+    } else {
+        alert("Invalid file name. Please include 'WD' or 'DS' in the file name.");
+        return;
+    }
+
+    try {
+        const [boldFontBytes, semiBoldFontBytes, lightFontBytes] = await Promise.all([
+            fetch('Police/Montserrat-Bold.ttf').then(res => res.arrayBuffer()),
+            fetch('Police/Montserrat-SemiBold.ttf').then(res => res.arrayBuffer()),
+            fetch('Police/Montserrat-ExtraLight.ttf').then(res => res.arrayBuffer())
+        ]);
+
+        const student = students[0];
+        const pdfBytes = await createCertificate(student, backgroundPdf, boldFontBytes, semiBoldFontBytes, lightFontBytes, graduationDate, startDay, lastDay, season, year, isDS);
+        
+        if (pdfBytes) {
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const previewList = document.getElementById('previewList');
+            previewList.innerHTML = `<div class="preview-item"><iframe src="${url}"></iframe></div>`;
+        }
+    } catch (error) {
+        console.error("Error creating preview certificate:", error);
+    }
+}

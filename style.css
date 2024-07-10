@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centre le contenu horizontalement */
     align-items: center;
     height: 100vh;
     margin: 0;
@@ -9,12 +9,58 @@ body {
 }
 
 .container {
-    text-align: center;
+    display: flex;
     background: white;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 90%; /* Largeur fixe de la boîte principale */
+    height: 90%; /* Ajuste la hauteur pour mieux utiliser l'espace vertical */
+}
+
+.form-container {
+    width: 20%; /* Taille de la colonne des paramètres */
+    text-align: center;
+    padding-right: 20px; /* Espace à droite pour ne pas être collé au séparateur */
+    overflow-y: auto; /* Défilement vertical si le contenu dépasse */
+}
+
+.preview-container {
+    height: 100%;
+    flex: 1; /* Utilise tout l'espace restant */
+    display: flex;
+    flex-direction: column; /* Permet à la prévisualisation de s'étendre sur toute la hauteur */
+    align-items: center; /* Centre le contenu horizontalement */
+    padding-left: 20px; /* Espace à gauche pour ne pas être collé au séparateur */
+    border-left: 1px solid #ccc;
+    overflow-y: auto; /* Défilement vertical si le contenu dépasse */
+}
+
+.preview-list {
+    width: 89%; /* Occupe toute la largeur disponible */
+    height: 100%; /* Occupe toute la hauteur disponible */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Aligne les éléments en haut de la colonne */
+    padding: 20px; /* Ajoute un peu de marge à l'intérieur de la preview-list */
+    overflow-y: auto; /* Défilement vertical si le contenu dépasse */
+}
+
+.preview-item {
+    width: 89%;
+    flex-grow: 1; /* Ajuste la taille de chaque élément pour utiliser tout l'espace disponible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.preview-item iframe {
+    width: 89%;
+    height: 100%;
+    object-fit: contain; /* Maintient le ratio d'aspect tout en remplissant l'espace disponible */
+    border: none;
 }
 
 .section {
@@ -28,15 +74,16 @@ h2 {
 }
 
 .required h2 {
-    color: #000000; /* Rouge pour indiquer les champs obligatoires */
+    color: #000000;
 }
 
 .optional {
-    background-color: #f0f0f0; /* Gris pour indiquer les champs optionnels */
+    background-color: #f0f0f0;
+    margin-top: 20px; /* Espace au-dessus du carré gris */
 }
 
 .optional h2 {
-    color: #000000; /* Bleu pour indiquer les champs optionnels */
+    color: #000000;
 }
 
 label {
@@ -75,18 +122,34 @@ label {
     text-align: left;
 }
 
+/* Styles généraux pour le bouton */
 button {
     padding: 10px 20px;
-    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-button:hover {
-    background-color: #0056b3;
+/* Style pour le bouton "Generate Certificate" */
+button.generate {
+    background-color: #007bff; /* Bleu */
+}
+
+button.generate:hover {
+    background-color: #0056b3; /* Bleu foncé */
+}
+
+/* Style pour le bouton "Preview First Certificate" */
+button.preview {
+    background-color: #838b85; /* Gris */
+}
+
+button.preview:hover {
+    background-color: #6c757d; /* Gris foncé */
 }
 
 .background-info {
