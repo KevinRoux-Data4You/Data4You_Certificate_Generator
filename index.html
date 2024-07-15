@@ -45,29 +45,39 @@
                 </div>
             </div>
             <button class="preview" onclick="handleCertificateAction(true)">Preview First Certificate</button>
-            <button class="generate" onclick="handleCertificateAction(false)">Generate Certificates</button>
+            <button class="download" onclick="downloadCertificates()">Download Certificates</button>
             <div class="progress-bar-container hidden" id="progressBarContainer">
                 <div class="progress-bar" id="progressBar">
                     <span id="progressText">0%</span>
                 </div>
             </div>
         </div>
-        <div class="preview-container" id="previewContainer">
-            <h2>Certificate Preview:</h2>
-            <div class="preview-list" id="previewList"></div>
-            <div class="pagination" id="paginationContainer"></div>
-        </div>        
+        <div class="preview-container">
+            <div class="preview-content">
+                <div class="student-info" id="studentInfo">
+                    <!-- This div will be populated with student certificate data -->
+                </div>
+                <div class="preview-list" id="previewList">
+                    <!-- This div will be populated with the certificate preview -->
+                </div>
+            </div>
+            <div id="paginationContainer" class="pagination">
+                <!-- This div will be populated with pagination buttons -->
+            </div>
+        </div>
     </div>
     <script type="module">
-        import { handleCertificateAction } from './src/generateCertificate.js';
+        import { handleCertificateAction, downloadCertificates, saveStudentData } from './src/generateCertificate.js';
         import { updateBackgroundName } from './src/updateBackgroundName.js';
         import { updateCustomBackgroundName } from './src/updateCustomBackgroundName.js';
         import { resetBackground } from './src/resetBackground.js';
     
         window.handleCertificateAction = handleCertificateAction;
+        window.downloadCertificates = downloadCertificates;
         window.updateBackgroundName = updateBackgroundName;
         window.updateCustomBackgroundName = updateCustomBackgroundName;
         window.resetBackground = resetBackground;
+        window.saveStudentData = saveStudentData;
     </script>
 </body>
 </html>

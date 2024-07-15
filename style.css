@@ -14,7 +14,7 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 90%;
+    width: 95%;
     height: 90%;
 }
 
@@ -26,18 +26,27 @@ body {
 }
 
 .preview-container {
-    height: 100%;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-left: 20px;
-    border-left: 1px solid #ccc;
+    width: 80%;
+    height: 100%;
+}
+
+.preview-content {
+    display: flex;
+    flex-grow: 1;
+    height: calc(100% - 50px); /* Adjust this value based on your pagination height */
+}
+
+.student-info {
+    width: 50%;
+    padding: 20px;
+    border-right: 1px solid #ccc;
     overflow-y: auto;
 }
 
 .preview-list {
-    width: 89%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -48,7 +57,7 @@ body {
 }
 
 .preview-item {
-    width: 89%;
+    width: 100%;
     flex-grow: 1;
     display: flex;
     justify-content: center;
@@ -57,10 +66,31 @@ body {
 }
 
 .preview-item iframe {
-    width: 89%;
+    width: 100%;
     height: 100%;
     object-fit: contain;
     border: none;
+}
+
+.student-data {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.student-data h3 {
+    margin: 0 0 10px;
+}
+
+.student-data p {
+    margin: 0 0 5px;
+}
+
+.student-data textarea {
+    width: 100%;
+    resize: both; /* Désactive le redimensionnement manuel pour une meilleure gestion automatique */
+    overflow: hidden; /* Cache les barres de défilement */
 }
 
 .pagination {
@@ -68,19 +98,21 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    margin-top: 10px;
+    padding: 10px 0;
+    background: #fff;
+    border-top: 1px solid #ccc;
 }
 
 .pagination-button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 6px 12px; /* Ajuster la taille du padding pour réduire l'espace autour du texte */
+    padding: 6px 12px; /* Adjust padding for smaller space around text */
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px; /* Réduire légèrement la taille de la police */
+    font-size: 14px; /* Slightly reduce font size */
     font-weight: bold;
-    margin: 3px; /* Espacement entre les boutons */
+    margin: 3px; /* Space between buttons */
     transition: background-color 0.3s;
 }
 
@@ -150,6 +182,7 @@ label {
 button {
     padding: 10px 20px;
     color: white;
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -158,11 +191,7 @@ button {
     font-weight: bold;
 }
 
-button.generate {
-    background-color: #007bff;
-}
-
-button.generate:hover {
+button:hover {
     background-color: #0056b3;
 }
 
