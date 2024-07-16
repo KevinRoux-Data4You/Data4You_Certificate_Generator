@@ -16,6 +16,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 95%;
     height: 90%;
+    overflow: hidden;
 }
 
 .form-container {
@@ -30,35 +31,48 @@ body {
     flex-direction: column;
     width: 80%;
     height: 100%;
+    overflow: hidden;
 }
 
 .preview-content {
     display: flex;
-    flex-grow: 1;
-    height: calc(100% - 50px); /* Adjust this value based on your pagination height */
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
 }
 
-.student-info {
-    width: 50%;
-    padding: 20px;
-    border-right: 1px solid #ccc;
+.student-data-container {
+    display: flex;
+}
+
+.student-data-left, .student-data-right {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
     overflow-y: auto;
 }
 
+.student-data-left {
+    border-right: none;
+}
+
+.student-data textarea {
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+}
+
 .preview-list {
-    width: 50%;
-    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 20px;
     overflow-y: auto;
 }
 
 .preview-item {
     width: 100%;
-    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,30 +81,9 @@ body {
 
 .preview-item iframe {
     width: 100%;
-    height: 100%;
+    height: 500px;
     object-fit: contain;
     border: none;
-}
-
-.student-data {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-}
-
-.student-data h3 {
-    margin: 0 0 10px;
-}
-
-.student-data p {
-    margin: 0 0 5px;
-}
-
-.student-data textarea {
-    width: 100%;
-    resize: both; /* Désactive le redimensionnement manuel pour une meilleure gestion automatique */
-    overflow: hidden; /* Cache les barres de défilement */
 }
 
 .pagination {
@@ -107,17 +100,20 @@ body {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 6px 12px; /* Adjust padding for smaller space around text */
+    padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px; /* Slightly reduce font size */
-    font-weight: bold;
-    margin: 3px; /* Space between buttons */
-    transition: background-color 0.3s;
+    font-size: 14px;
+    margin: 2px;
 }
 
 .pagination-button:hover {
     background-color: #0056b3;
+}
+
+.pagination-button.active {
+    background-color: #0056b3;
+    cursor: default;
 }
 
 .section {

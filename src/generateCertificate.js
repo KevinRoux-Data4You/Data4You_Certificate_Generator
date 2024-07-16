@@ -331,16 +331,29 @@ async function renderPreview() {
 
             const excludedFields = ['studentName', 'score', 'attendance'];
 
-            const certificateDataHtml = Object.entries(certificateData)
-                .filter(([key, value]) => !excludedFields.includes(key))
+            const leftColumnHtml = Object.entries(certificateData)
+                .filter(([key, value]) => !excludedFields.includes(key) && (key === 'titleText' || key === 'awardText'))
+                .map(([key, value]) =>
+                    `<p><strong>${key}:</strong> <textarea oninput="resizeTextarea(this)">${typeof value === 'object' ? JSON.stringify(value, null, 2) : value}</textarea></p>`
+                ).join('');
+
+            const rightColumnHtml = Object.entries(certificateData)
+                .filter(([key, value]) => !excludedFields.includes(key) && key !== 'titleText' && key !== 'awardText')
                 .map(([key, value]) =>
                     `<p><strong>${key}:</strong> <textarea oninput="resizeTextarea(this)">${typeof value === 'object' ? JSON.stringify(value, null, 2) : value}</textarea></p>`
                 ).join('');
 
             studentDataDiv.innerHTML =
                 `<h3>${studentKey}</h3>
-                ${certificateDataHtml}
-                <button onclick="saveStudentData('${studentKey}')">Save</button>`;
+                <div class="student-data-container">
+                    <div class="student-data-left">
+                        ${leftColumnHtml}
+                    </div>
+                    <div class="student-data-right">
+                        ${rightColumnHtml}
+                        <button onclick="saveStudentData('${studentKey}')">Save</button>
+                    </div>
+                </div>`;
 
             studentInfo.appendChild(studentDataDiv);
 
@@ -351,6 +364,7 @@ async function renderPreview() {
         }
     }
 }
+
 
 // Ajoutez cette ligne pour que resizeTextarea soit accessible dans le contexte global
 window.resizeTextarea = resizeTextarea;
